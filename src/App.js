@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import Header from "./components/Header";
 import Input from "./components/Input";
+import { Transition, animated } from "react-spring/renderprops";
 import BlogCard from "./components/BlogCard";
-// import Testspring from "./components/Testspring";
 import "./App.css";
 
 class App extends Component {
@@ -18,12 +18,21 @@ class App extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleContent = this.handleContent.bind(this);
   }
+
+  componentDidMount() {
+    let blog;
+    if (localStorage.getItem("blog") === null) {
+      blog = ["empty"];
+    } else {
+      const blogCon = JSON.parse(localStorage.getItem("blog"));
+      this.setState({ blogs: this.state.blogs.concat(blogCon) });
+    }
+  }
   clickBtn = () => {
     this.setState({ isClicked: true });
     if (this.state.isClicked === true) {
       this.setState({ isClicked: false });
     }
-    console.log(this.state.isClicked);
   };
 
   handleChange = (event) => {
@@ -46,20 +55,51 @@ class App extends Component {
       text: "",
       content: "",
     }));
+
+    localStorage.setItem("blog", JSON.stringify(this.state.blogs));
   }
+  deleteBtn = (id) => {
+    this.setState({
+      blogs: [...this.state.blogs.filter((blog) => blog.id !== id)],
+    });
+  };
+  deleteLocal = () => {
+    localStorage.removeItem("blog");
+    this.setState({ blogs: [] });
+  };
+  // getLocal = () => {
+  //   let x = localStorage.getItem("blog");
+  //   console.log(x);
+  // };
   render() {
-    console.log(this.state.text);
     return (
       <div className="App">
-        <Header click={this.state.isClicked} btn={this.clickBtn} />
-        <Input
+        <Header
           click={this.state.isClicked}
-          handleSubmit={this.handleSubmit}
-          handleChange={this.handleChange}
-          handleContent={this.handleContent}
+          btn={this.clickBtn}
+          delLocal={this.deleteLocal}
         />
-        <BlogCard blogs={this.state.blogs} />
-        {/* <Testspring /> */}
+        <Transition
+          native
+          items={this.state.isClicked}
+          from={{ opacity: 0 }}
+          enter={{ opacity: 1 }}
+          leave={{ opacity: 0 }}
+        >
+          {(show) =>
+            show &&
+            ((props) => (
+              <animated.div style={props}>
+                <Input
+                  handleSubmit={this.handleSubmit}
+                  handleChange={this.handleChange}
+                  handleContent={this.handleContent}
+                />
+              </animated.div>
+            ))
+          }
+        </Transition>
+        <BlogCard blogs={this.state.blogs} deleteBtn={this.deleteBtn} />
       </div>
     );
   }

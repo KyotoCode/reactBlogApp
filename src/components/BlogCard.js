@@ -5,7 +5,6 @@ import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
-import { render } from "@testing-library/react";
 import React from "react";
 
 const useStyles = makeStyles({
@@ -19,7 +18,6 @@ const useStyles = makeStyles({
 
 export default function BlogCard(props) {
   const classes = useStyles();
-  console.log(props.blogs);
   return (
     <div
       style={{
@@ -43,8 +41,12 @@ export default function BlogCard(props) {
               </CardContent>
             </CardActionArea>
             <CardActions style={{ display: "flex", justifyContent: "center" }}>
-              <Button size="small" color="primary">
-                Share
+              <Button
+                size="small"
+                color="primary"
+                onClick={props.deleteBtn.bind(this, blog.id)}
+              >
+                Delete
               </Button>
               <Button size="small" color="primary">
                 Learn More

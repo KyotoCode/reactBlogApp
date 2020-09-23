@@ -4,7 +4,7 @@ import React from "react";
 
 export default function Input(props) {
   return (
-    <div className="input" style={{ display: props.click ? "flex" : "none" }}>
+    <div className="input">
       <form onSubmit={props.handleSubmit}>
         <input
           type="text"

@@ -17,7 +17,21 @@ header {
   width: 100vw;
   height: 15%;
 }
-
+.header-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .header-logo {
+    animation: header-logo-spin infinite 20s linear;
+  }
+}
+.delBtn {
+  position: absolute !important;
+  text-align: center;
+  left: 20px;
+  background-color: #3da9c7 !important;
+}
 .addBtn {
   position: absolute !important;
   right: 20px;
@@ -37,7 +51,6 @@ form {
   height: 20%;
   background-color: #333333;
   padding-top: 20px;
-  display: none;
 }
 .titleIn {
   display: flex;
@@ -56,7 +69,14 @@ form {
   display: flex;
   align-self: center;
 }
-
+@keyframes header-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
 /*
 #61dafb
 #282c34
